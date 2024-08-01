@@ -1,4 +1,4 @@
-name: Codeowners Validation
+name: CODEOWNERS Validation
 run-name: ${{ github.actor }} is checking each Dockerfile for a CODEOWNER
 on:
   pull_request:
@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  Explore-GitHub-Actions:
+  CheckDockerfileCodeowners:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
@@ -47,11 +47,7 @@ jobs:
                   fi
               done
 
-              # Print the owner of the Dockerfile
-              echo "Dockerfile '$dockerfile' is owned by '$owner'"
-
               if [[ -z "$owner" ]]; then
-                  echo "Dockerfile '$dockerfile' does not have an owner in the CODEOWNERS file."
                   filesWithoutOwner+=("$dockerfile")
               fi
           done
