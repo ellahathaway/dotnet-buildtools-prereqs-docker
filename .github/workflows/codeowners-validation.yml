@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
-      - name: Run the CheckDockerfileCodeowners script
+      - name: Check each Dockerfile for a CODEOWNER
         run: |
           #!/bin/bash
           set -e
