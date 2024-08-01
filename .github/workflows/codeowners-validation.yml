@@ -1,0 +1,66 @@
+name: Codeowners Validation
+run-name: ${{ github.actor }} is checking each Dockerfile for a CODEOWNER
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  Explore-GitHub-Actions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - name: Run the CheckDockerfileCodeowners script
+        run: |
+          #!/bin/bash
+          set -e
+
+          codeOwnersFilePath="CODEOWNERS"
+          declare -A codeOwners
+
+          # Read and parse the CODEOWNERS file
+          while IFS= read -r line; do
+              # Ignore comment lines
+              if [[ "$line" =~ ^\s*# ]]; then
+                  continue
+              fi
+
+              # Match lines with paths and owners
+              if [[ "$line" =~ ^\s*(\S+)\s+(@\S+) ]]; then
+                  path="${BASH_REMATCH[1]}"
+                  owner="${BASH_REMATCH[2]}"
+                  codeOwners["$path"]="$owner"
+              fi
+          done < "$codeOwnersFilePath"
+
+          filesWithoutOwner=()
+          dockerfiles=$(find . -type f -name "Dockerfile")
+
+          # Check each Dockerfile for an owner
+          for dockerfile in $dockerfiles; do
+              owner=""
+              for path in "${!codeOwners[@]}"; do
+                  if [[ "$dockerfile" == *"$path"* ]]; then
+                      owner="${codeOwners[$path]}"
+                      break
+                  fi
+              done
+
+              # Print the owner of the Dockerfile
+              echo "Dockerfile '$dockerfile' is owned by '$owner'"
+
+              if [[ -z "$owner" ]]; then
+                  echo "Dockerfile '$dockerfile' does not have an owner in the CODEOWNERS file."
+                  filesWithoutOwner+=("$dockerfile")
+              fi
+          done
+
+          # Fail the build if there are files without an owner
+          if [[ ${#filesWithoutOwner[@]} -gt 0 ]]; then
+              echo "The following Dockerfiles do not have an owner in the CODEOWNERS file:"
+              for file in "${filesWithoutOwner[@]}"; do
+                  echo "$file"
+              done
+              exit 1
+          fi
