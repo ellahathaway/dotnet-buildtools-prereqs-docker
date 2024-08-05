@@ -45,6 +45,7 @@ src/fedora/**/amd64/ @dotnet/source-build-internal
 # ubuntu
 src/ubuntu/**/debpkg/ @dotnet/runtime-infrastructure
 src/ubuntu/22.04/mlnet/ @dotnet/runtime-infrastructure
-src/ubuntu/*/Dockerfile @dotnet/runtime-infrastructure
 src/ubuntu/22.04/opt/arm64v8/ @dotnet/runtime-infrastructure
 src/ubuntu/common/coredeps/ @dotnet/runtime-infrastructure
+
+some/unused/pattern @testuser
