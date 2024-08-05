@@ -2,7 +2,7 @@
 # See https://help.github.com/articles/about-code-owners/
 
 ### General infra ###
-/* @dotnet/dotnet-docker-reviewers
+/* @dotnet/code-owners
 eng/ @dotnet/dotnet-docker-reviewers
 
 ### Dockerfiles ###
@@ -45,9 +45,6 @@ src/fedora/**/amd64/ @dotnet/source-build-internal
 # ubuntu
 src/ubuntu/**/debpkg/ @dotnet/runtime-infrastructure
 src/ubuntu/22.04/mlnet/ @dotnet/runtime-infrastructure
+src/ubuntu/*/Dockerfile @dotnet/runtime-infrastructure
 src/ubuntu/22.04/opt/arm64v8/ @dotnet/runtime-infrastructure
 src/ubuntu/common/coredeps/ @dotnet/runtime-infrastructure
-src/ubuntu/20.04/Dockerfile @dotnet/source-build-internal
-src/ubuntu/22.04/Dockerfile @dotnet/source-build-internal
-src/ubuntu/24.04/Dockerfile @dotnet/source-build-internal
-
